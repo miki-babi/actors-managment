@@ -33,30 +33,45 @@ function actors_management_init() {
 
     // Add your plugin logic here.
 
-function log_admin_menus() {
-    global $menu;
+function log_admin_menus_and_submenus() {
+    global $menu, $submenu;
 
     $menus = [];
-    foreach ($menu as $item) {
-        // Format: [menu_slug] => Menu Title
-        $menus[] = [
-            'menu_slug' => $item[2],
-            'menu_title' => $item[0],
+
+    foreach ($menu as $main_item) {
+        $menu_slug = $main_item[2];
+
+        $menus[$menu_slug] = [
+            'menu_title' => maybe_unserialize($main_item[0]),
+            'capability' => $main_item[1],
+            'menu_slug'  => $menu_slug,
+            'position'   => isset($main_item[3]) ? $main_item[3] : null,
+            'icon'       => isset($main_item[6]) ? $main_item[6] : null,
+            'submenus'   => [],
         ];
+
+        if (isset($submenu[$menu_slug])) {
+            foreach ($submenu[$menu_slug] as $sub_item) {
+                $menus[$menu_slug]['submenus'][] = [
+                    'menu_title' => maybe_unserialize($sub_item[0]),
+                    'capability' => $sub_item[1],
+                    'menu_slug'  => $sub_item[2],
+                    'position'   => isset($sub_item[3]) ? $sub_item[3] : null,
+                ];
+            }
+        }
     }
 
-    // Encode the data as JSON
-    $json_data = json_encode($menus, JSON_PRETTY_PRINT);
+    $json_data = json_encode($menus, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
-    // Save the JSON data to a file named menus.json in the current directory
-    $file_path = plugin_dir_path(__FILE__) . 'menus.json';
+    $file_path = plugin_dir_path(__FILE__) . 'menus_with_submenus.json';
     file_put_contents($file_path, $json_data);
 }
-add_action('admin_menu', 'log_admin_menus', 998); // Run before your restriction
+add_action('admin_menu', 'log_admin_menus_and_submenus', 998);
 
 
-    // Restrict all admin sidebar menus and add back specific ones based on user role.
-    function restrict_admin_menus() {
+// Restrict all admin sidebar menus and add back specific ones based on user role.
+function restrict_admin_menus() {
     global $menu;
 
     // Get current user
