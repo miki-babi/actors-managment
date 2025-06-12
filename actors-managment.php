@@ -64,7 +64,7 @@ function log_admin_menus_and_submenus() {
 
     $json_data = json_encode($menus, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
-    $file_path = plugin_dir_path(__FILE__) . 'menus_with_submenus.json';
+    $file_path = plugin_dir_path(__FILE__) . 'menus.json';
     file_put_contents($file_path, $json_data);
 }
 add_action('admin_menu', 'log_admin_menus_and_submenus', 998);
