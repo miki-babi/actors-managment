@@ -36,12 +36,21 @@ function actors_management_init() {
 function log_admin_menus() {
     global $menu;
 
-    echo '<pre>';
+    $menus = [];
     foreach ($menu as $item) {
         // Format: [menu_slug] => Menu Title
-        echo esc_html($item[2] . ' => ' . $item[0]) . "\n";
+        $menus[] = [
+            'menu_slug' => $item[2],
+            'menu_title' => $item[0],
+        ];
     }
-    echo '</pre>';
+
+    // Encode the data as JSON
+    $json_data = json_encode($menus, JSON_PRETTY_PRINT);
+
+    // Save the JSON data to a file named menus.json in the current directory
+    $file_path = plugin_dir_path(__FILE__) . 'menus.json';
+    file_put_contents($file_path, $json_data);
 }
 add_action('admin_menu', 'log_admin_menus', 998); // Run before your restriction
 
