@@ -30,17 +30,22 @@ function actors_management_init() {
     // Add your plugin logic here.
     // Restrict all admin sidebar menus and add back specific ones based on user role.
     function restrict_admin_menus() {
-        global $menu;
+    global $menu;
 
-        // Clear all menus.
+    // Get current user
+    $user = wp_get_current_user();
+
+    // Check if user has the 'shop_manager' role
+    if (in_array('shop_manager', (array) $user->roles)) {
+        // Clear all menus
         $menu = [];
 
-        // Add back specific menus based on user role.
-        if (current_user_can('Shop manager')) { // Replace 'administrator' with the role you want to allow access.
-            add_menu_page('Dashboard', 'Dashboard', 'read', 'index.php', '', 'dashicons-dashboard', 2);
-            add_menu_page('Posts', 'Posts', 'edit_posts', 'edit.php', '', 'dashicons-admin-post', 5);
-        }
+        // Add back specific menus for shop managers
+        add_menu_page('Dashboard', 'Dashboard', 'read', 'index.php', '', 'dashicons-dashboard', 2);
+        add_menu_page('Posts', 'Posts', 'edit_posts', 'edit.php', '', 'dashicons-admin-post', 5);
     }
+}
+
     add_action('admin_menu', 'restrict_admin_menus', 999);
 }
 add_action('init', 'actors_management_init');
