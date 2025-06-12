@@ -84,7 +84,8 @@ function restrict_admin_menus() {
 
         // Add back specific menus for shop managers
         // add_menu_page('Dashboard', 'Dashboard', 'read', 'index.php', '', 'dashicons-dashboard', 2);
-        add_menu_page('Posts', 'Posts', 'edit_posts', 'edit.php', '', 'dashicons-admin-post', 5);
+        // add_menu_page('Posts', 'Posts', 'edit_posts', 'edit.php', '', 'dashicons-admin-post', 5);
+        add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
     }
 }
 
