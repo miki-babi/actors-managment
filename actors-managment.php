@@ -111,7 +111,9 @@ add_action('admin_menu', 'log_admin_menus_and_submenus', 998);
 function restrict_admin_menus() {
     global $menu;
 
-    $roles= [
+    $user = wp_get_current_user();
+    $user_roles = (array) $user->roles;
+    $target_roles = [
         'warehouse_staff',
         'price_manager',
         'ecommerce_manager',
@@ -119,43 +121,49 @@ function restrict_admin_menus() {
         'cashier'
     ];
 
-    // If user has one of the target roles, clear all menus
-    if (array_intersect($roles, (array) $user->roles)) {
+    // Get the first matched role
+    $current_role = false;
+    foreach ($target_roles as $role) {
+        if (in_array($role, $user_roles)) {
+            $current_role = $role;
+            break;
+        }
+    }
+
+    // If user has one of the target roles, reset menu
+    if ($current_role) {
         $menu = [];
 
-    // Re-add based on role
-    switch ($role) {
-        case 'warehouse_staff':
-            add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
-            add_menu_page('Orders', 'Orders', 'edit_shop_orders', 'edit.php?post_type=shop_order', '', 'dashicons-list-view', 56);
-            break;
+        // Show menus based on role
+        switch ($current_role) {
+            case 'warehouse_staff':
+                add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
+                add_menu_page('Orders', 'Orders', 'edit_shop_orders', 'edit.php?post_type=shop_order', '', 'dashicons-list-view', 56);
+                break;
 
-        case 'price_manager':
-            add_menu_page('Products', 'Products', 'edit_products', 'edit.php?post_type=product', '', 'dashicons-products', 55);
-            break;
+            case 'price_manager':
+                add_menu_page('Products', 'Products', 'edit_products', 'edit.php?post_type=product', '', 'dashicons-products', 55);
+                break;
 
-        case 'ecommerce_manager':
-            add_menu_page('Posts', 'Posts', 'edit_posts', 'edit.php', '', 'dashicons-admin-post', 5);
-            add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
-            add_menu_page('Products', 'Products', 'edit_products', 'edit.php?post_type=product', '', 'dashicons-products', 56);
-            break;
+            case 'ecommerce_manager':
+                add_menu_page('Posts', 'Posts', 'edit_posts', 'edit.php', '', 'dashicons-admin-post', 5);
+                add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
+                add_menu_page('Products', 'Products', 'edit_products', 'edit.php?post_type=product', '', 'dashicons-products', 56);
+                break;
 
-        case 'finance_staff':
-            add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
-            add_menu_page('Orders', 'Orders', 'edit_shop_orders', 'edit.php?post_type=shop_order', '', 'dashicons-list-view', 56);
-            add_menu_page('Analytics', 'Analytics', 'view_woocommerce_reports', 'wc-admin&path=/analytics/overview', '', 'dashicons-chart-bar', 57);
-            break;
+            case 'finance_staff':
+                add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
+                add_menu_page('Orders', 'Orders', 'edit_shop_orders', 'edit.php?post_type=shop_order', '', 'dashicons-list-view', 56);
+                add_menu_page('Analytics', 'Analytics', 'view_woocommerce_reports', 'wc-admin&path=/analytics/overview', '', 'dashicons-chart-bar', 57);
+                break;
 
-       case 'cashier':
-            add_menu_page('Orders', 'Orders', 'edit_shop_orders', 'edit.php?post_type=shop_order', '', 'dashicons-list-view', 55);
-            add_menu_page('WooCommerce', 'WooCommerce', 'view_woocommerce_reports', 'woocommerce', '', 'dashicons-cart', 56);
-            break;
-            
+            case 'cashier':
+                add_menu_page('Orders', 'Orders', 'edit_shop_orders', 'edit.php?post_type=shop_order', '', 'dashicons-list-view', 55);
+                add_menu_page('WooCommerce', 'WooCommerce', 'view_woocommerce_reports', 'woocommerce', '', 'dashicons-cart', 56);
+                break;
+        }
     }
 }
 add_action('admin_menu', 'restrict_admin_menus', 999);
-
-
-    add_action('admin_menu', 'restrict_admin_menus', 999);
 }
 add_action('init', 'actors_management_init');
