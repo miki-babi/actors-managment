@@ -3,7 +3,8 @@
  * Plugin Name: Actors Management
  * Description: A plugin to manage actors and their details.
  * Version: 1.0.0
- * Author: Your Name
+ * Author: Mikiyas Shiferaw
+ * Author URI: https://axumcode.com
  * License: GPL2
  */
 
@@ -110,11 +111,17 @@ add_action('admin_menu', 'log_admin_menus_and_submenus', 998);
 function restrict_admin_menus() {
     global $menu;
 
-    $user = wp_get_current_user();
-    $role = $user->roles[0] ?? '';
+    $roles= [
+        'warehouse_staff',
+        'price_manager',
+        'ecommerce_manager',
+        'finance_staff',
+        'cashier'
+    ];
 
-    // Reset all menus
-    $menu = [];
+    // If user has one of the target roles, clear all menus
+    if (array_intersect($roles, (array) $user->roles)) {
+        $menu = [];
 
     // Re-add based on role
     switch ($role) {
