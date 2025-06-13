@@ -15,14 +15,50 @@ if (!defined('ABSPATH')) {
 // Plugin activation hook.
 function actors_management_activate() {
     // Code to run on activation.
-    
+    add_role('warehouse_staff', 'Warehouse Staff', [
+        'read' => true,
+        'manage_woocommerce' => true,
+        'edit_shop_orders' => true,
+        'view_woocommerce_reports' => true,
+    ]);
 
+    add_role('price_manager', 'Price Manager', [
+        'read' => true,
+        'edit_products' => true,
+        'manage_product_terms' => true,
+        'manage_woocommerce' => true,
+    ]);
+
+    add_role('ecommerce_manager', 'Ecommerce Manager', [
+        'read' => true,
+        'edit_posts' => true,
+        'publish_posts' => true,
+        'manage_woocommerce' => true,
+        'view_woocommerce_reports' => true,
+    ]);
+
+    add_role('finance_staff', 'Finance Staff', [
+        'read' => true,
+        'view_woocommerce_reports' => true,
+        'manage_woocommerce' => true,
+    ]);
+
+    add_role('cashier', 'Cashier', [
+        'read' => true,
+        'view_woocommerce_reports' => true,
+    ]);
 }
 register_activation_hook(__FILE__, 'actors_management_activate');
 
 // Plugin deactivation hook.
 function actors_management_deactivate() {
     // Code to run on deactivation.
+    remove_role('warehouse_staff');
+    remove_role('price_manager');
+    remove_role('ecommerce_manager');
+    remove_role('finance_staff');
+    remove_role('cashier');
+
 }
 register_deactivation_hook(__FILE__, 'actors_management_deactivate');
 
