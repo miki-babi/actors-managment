@@ -110,20 +110,40 @@ add_action('admin_menu', 'log_admin_menus_and_submenus', 998);
 function restrict_admin_menus() {
     global $menu;
 
-    // Get current user
     $user = wp_get_current_user();
+    $role = $user->roles[0] ?? '';
 
-    // Check if user has the 'shop_manager' role
-    if (in_array('shop_manager', (array) $user->roles)) {
-        // Clear all menus
-        $menu = [];
+    // Reset all menus
+    $menu = [];
 
-        // Add back specific menus for shop managers
-        // add_menu_page('Dashboard', 'Dashboard', 'read', 'index.php', '', 'dashicons-dashboard', 2);
-        // add_menu_page('Posts', 'Posts', 'edit_posts', 'edit.php', '', 'dashicons-admin-post', 5);
-        add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
+    // Re-add based on role
+    switch ($role) {
+        case 'warehouse_staff':
+            add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
+            add_menu_page('Orders', 'Orders', 'edit_shop_orders', 'edit.php?post_type=shop_order', '', 'dashicons-list-view', 56);
+            break;
+
+        case 'price_manager':
+            add_menu_page('Products', 'Products', 'edit_products', 'edit.php?post_type=product', '', 'dashicons-products', 55);
+            break;
+
+        case 'ecommerce_manager':
+            add_menu_page('Posts', 'Posts', 'edit_posts', 'edit.php', '', 'dashicons-admin-post', 5);
+            add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
+            add_menu_page('Products', 'Products', 'edit_products', 'edit.php?post_type=product', '', 'dashicons-products', 56);
+            break;
+
+        case 'finance_staff':
+            add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
+            break;
+
+        case 'cashier':
+            add_menu_page('WooCommerce', 'WooCommerce', 'view_woocommerce_reports', 'woocommerce', '', 'dashicons-cart', 55);
+            break;
     }
 }
+add_action('admin_menu', 'restrict_admin_menus', 999);
+
 
     add_action('admin_menu', 'restrict_admin_menus', 999);
 }
