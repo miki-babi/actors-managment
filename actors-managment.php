@@ -188,7 +188,7 @@ function restrict_admin_menus() {
                 break;
 
             case 'finance_staff':
-                add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
+                // add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
                 add_menu_page('Orders', 'Orders', 'edit_shop_orders', 'edit.php?post_type=shop_order', '', 'dashicons-list-view', 56);
                 add_menu_page('Analytics', 'Analytics', 'view_woocommerce_reports', 'wc-admin&path=/analytics/overview', '', 'dashicons-chart-bar', 57);
                 break;
