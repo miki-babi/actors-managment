@@ -171,8 +171,10 @@ function restrict_admin_menus() {
         // Show menus based on role
         switch ($current_role) {
             case 'warehouse_staff':
-                add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
+                // add_menu_page('WooCommerce', 'WooCommerce', 'manage_woocommerce', 'woocommerce', '', 'dashicons-cart', 55);
                 add_menu_page('Orders', 'Orders', 'edit_shop_orders', 'edit.php?post_type=shop_order', '', 'dashicons-list-view', 56);
+                add_menu_page('Products', 'Products', 'edit_products', 'edit.php?post_type=product', '', 'dashicons-products', 55);
+
                 break;
 
             case 'price_manager':
