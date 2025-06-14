@@ -17,11 +17,14 @@ if (!defined('ABSPATH')) {
 function actors_management_activate() {
     // Code to run on activation.
     add_role('warehouse_staff', 'Warehouse Staff', [
-        'read' => true,
-        'manage_woocommerce' => true,
-        'edit_shop_orders' => true,
-        'view_woocommerce_reports' => true,
-    ]);
+    'read' => true,
+    'manage_woocommerce' => true,
+    'edit_shop_orders' => true,
+    'edit_others_shop_orders' => true,
+    'publish_shop_orders' => true,
+    'read_shop_order' => true,
+    'view_woocommerce_reports' => true,
+]);
 
     add_role('price_manager', 'Price Manager', [
         'read' => true,
