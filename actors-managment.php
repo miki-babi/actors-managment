@@ -84,10 +84,25 @@ register_deactivation_hook(__FILE__, 'actors_management_deactivate');
 
 // Main plugin functionality.
 function actors_management_init() {
-
-
-
     // Add your plugin logic here.
+    function disable_admin_notices_for_custom_roles() {
+    $user = wp_get_current_user();
+    $restricted_roles = [
+        'warehouse_staff',
+        'price_manager',
+        'ecommerce_manager',
+        'finance_staff',
+        'cashier'
+    ];
+
+    if (array_intersect($restricted_roles, (array) $user->roles)) {
+        // Remove all notices
+        remove_all_actions('admin_notices');
+        remove_all_actions('all_admin_notices');
+    }
+}
+add_action('admin_head', 'disable_admin_notices_for_custom_roles', 1);
+
 
 function log_admin_menus_and_submenus() {
     global $menu, $submenu;
