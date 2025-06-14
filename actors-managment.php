@@ -27,29 +27,45 @@ function actors_management_activate() {
 ]);
 
     add_role('price_manager', 'Price Manager', [
-        'read' => true,
-        'edit_products' => true,
-        'manage_product_terms' => true,
-        'manage_woocommerce' => true,
+    'read' => true,
+    'edit_products' => true,
+    'edit_others_products' => true,
+    'publish_products' => true,
+    'read_product' => true,
+    'delete_products' => true,
+    'manage_product_terms' => true,
+    'manage_woocommerce' => true,
     ]);
 
     add_role('ecommerce_manager', 'Ecommerce Manager', [
-        'read' => true,
-        'edit_posts' => true,
-        'publish_posts' => true,
-        'manage_woocommerce' => true,
-        'view_woocommerce_reports' => true,
+    'read' => true,
+    'edit_posts' => true,
+    'edit_others_posts' => true,
+    'publish_posts' => true,
+    'delete_posts' => true,
+    'edit_products' => true,
+    'edit_others_products' => true,
+    'publish_products' => true,
+    'delete_products' => true,
+    'manage_woocommerce' => true,
+    'view_woocommerce_reports' => true,
     ]);
 
     add_role('finance_staff', 'Finance Staff', [
-        'read' => true,
-        'view_woocommerce_reports' => true,
-        'manage_woocommerce' => true,
+    'read' => true,
+    'manage_woocommerce' => true,
+    'view_woocommerce_reports' => true,
+    'edit_shop_orders' => true,
+    'edit_others_shop_orders' => true,
+    'publish_shop_orders' => true,
+    'read_shop_order' => true,
     ]);
 
     add_role('cashier', 'Cashier', [
-        'read' => true,
-        'view_woocommerce_reports' => true,
+    'read' => true,
+    'edit_shop_orders' => true,
+    'read_shop_order' => true,
+    'view_woocommerce_reports' => true,
     ]);
 }
 register_activation_hook(__FILE__, 'actors_management_activate');
